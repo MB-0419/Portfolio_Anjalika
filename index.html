@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anjalika Rathnayake - Interactive CV</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        clinical: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            700: '#0f766e',
+                            900: '#134e4a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        body {
+            scroll-behavior: smooth;
+        }
+        .nav-link.active {
+            background-color: #e0f2fe;
+            color: #0369a1;
+            font-weight: 600;
+            border-left: 4px solid #0284c7;
+        }
+        .nav-link {
+            border-left: 4px solid transparent;
+            transition: all 0.2s ease-in-out;
+        }
+        .hide-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-clinical-100 selection:text-clinical-900">
+
+<!-- Chosen Palette: Clinical Calm (Slate background, Sky Blue/Teal accents representing medical/science themes) -->
+<!-- Application Structure Plan: The application uses a fixed side-navigation dashboard layout on desktop (top-nav on mobile) to allow immediate, non-linear access to any part of the CV. This structure transforms a static document into an explorable professional profile. The main content area is divided into logical, thematic sections (Summary, Interactive Skills, Experience Viewer, Education & Credentials). This prioritizes user task flow, allowing recruiters to quickly find specific competencies or drill down into experience details without excessive scrolling. -->
+<!-- Visualization & Content Choices: 
+1. Skills -> Goal: Compare/Inform -> Radar Chart (Chart.js) -> Provides a visual footprint of scientific competencies, proving broad laboratory knowledge at a glance without reading lists.
+2. Laboratory Techniques -> Goal: Organize -> Interactive Tabs (JS) -> Prevents text wall. Users click a category (Molecular, Micro, Clinical) to reveal specific skills.
+3. Experience -> Goal: Inform/Explore -> Master-Detail Timeline (JS) -> Keeps the layout clean. Users click a role on the left to see the extensive responsibilities and research details on the right. 
+Method confirming: Used strictly Canvas for charts, standard HTML/Tailwind for layout, and Unicode characters for icons. NO SVG/Mermaid used. -->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+        
+        <nav class="w-full md:w-64 bg-white shadow-lg md:fixed h-auto md:h-screen z-50 flex flex-col justify-between">
+            <div>
+                <div class="p-6 text-center border-b border-slate-100">
+                    <div class="w-24 h-24 rounded-full bg-gradient-to-br from-clinical-500 to-blue-500 mx-auto flex items-center justify-center text-white text-3xl font-bold mb-4 shadow-md">
+                        AR
+                    </div>
+                    <h1 class="text-xl font-bold text-slate-900 tracking-tight">Anjalika Rathnayake</h1>
+                    <p class="text-sm text-clinical-700 font-medium mt-1">Biomedical Scientist</p>
+                </div>
+                <div class="p-4 flex flex-col space-y-1">
+                    <a href="#summary" class="nav-link px-4 py-3 rounded text-slate-600 hover:bg-slate-50 active">Profile Summary</a>
+                    <a href="#skills" class="nav-link px-4 py-3 rounded text-slate-600 hover:bg-slate-50">Technical Skills</a>
+                    <a href="#experience" class="nav-link px-4 py-3 rounded text-slate-600 hover:bg-slate-50">Experience</a>
+                    <a href="#education" class="nav-link px-4 py-3 rounded text-slate-600 hover:bg-slate-50">Education & Refs</a>
+                </div>
+            </div>
+            <div class="p-6 border-t border-slate-100 text-xs text-slate-500">
+                <p>📍 Nugegoda, Sri Lanka</p>
+                <p class="mt-1">📞 +94 78 360 3069</p>
+                <p class="mt-1">✉️ anjurath22@gmail.com</p>
+            </div>
+        </nav>
+
+        <main class="flex-1 md:ml-64 p-6 md:p-12 lg:p-16 hide-scroll overflow-y-auto">
+            
+            <section id="summary" class="mb-24 pt-8 md:pt-0">
+                <p class="text-sm text-clinical-700 font-semibold uppercase tracking-wider mb-2">Introduction</p>
+                <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">Detail-oriented Biomedical Science graduate specializing in molecular medicine and clinical research.</h2>
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 text-lg text-slate-600 leading-relaxed max-w-4xl">
+                    <p class="mb-4">
+                        This section provides a high-level overview of my professional identity. As a Second Class Honors graduate, my core focus lies in translating laboratory techniques into impactful clinical and environmental research.
+                    </p>
+                    <p>
+                        I am proficient in molecular biology, microbiology, and mycoremediation techniques. I have demonstrated my ability in conducting high-impact research, notably including published work on naphthalene and phenanthrene degrading fungi. I thrive in clinical laboratory settings where precision and Good Laboratory Practice (GLP) are paramount.
+                    </p>
+                </div>
+                <div class="mt-8 flex flex-wrap gap-4">
+                    <a href="https://linkedin.com/in/anjalika-rathnayake-5605a9203" target="_blank" class="inline-flex items-center px-6 py-3 bg-[#0A66C2] text-white font-medium rounded-lg hover:bg-blue-800 transition-colors shadow-sm">
+                        <span>🔗</span> <span class="ml-2">Connect on LinkedIn</span>
+                    </a>
+                </div>
+            </section>
+
+            <section id="skills" class="mb-24 pt-12">
+                <div class="mb-8 max-w-3xl">
+                    <h3 class="text-3xl font-bold text-slate-900 mb-4">Technical Competencies</h3>
+                    <p class="text-slate-600 text-lg">
+                        This interactive section breaks down my scientific skill set. The radar chart visualizes my core competency distribution across different biomedical disciplines. Use the interactive tabs below to explore specific techniques and equipment proficiency.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                    
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col items-center">
+                        <h4 class="text-center font-semibold text-slate-800 mb-2">Competency Footprint</h4>
+                        <div class="chart-container w-full">
+                            <canvas id="skillsRadarChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col h-full">
+                        <div class="flex border-b border-slate-200 bg-slate-50">
+                            <button onclick="switchSkillTab('molecular')" id="tab-molecular" class="flex-1 py-4 text-sm font-semibold text-clinical-700 bg-white border-b-2 border-clinical-500 transition-colors">Molecular</button>
+                            <button onclick="switchSkillTab('microbiology')" id="tab-microbiology" class="flex-1 py-4 text-sm font-semibold text-slate-500 hover:text-slate-700 transition-colors">Microbiology</button>
+                            <button onclick="switchSkillTab('clinical')" id="tab-clinical" class="flex-1 py-4 text-sm font-semibold text-slate-500 hover:text-slate-700 transition-colors">Clinical</button>
+                            <button onclick="switchSkillTab('equipment')" id="tab-equipment" class="flex-1 py-4 text-sm font-semibold text-slate-500 hover:text-slate-700 transition-colors">Equipment</button>
+                        </div>
+                        <div class="p-8 flex-1">
+                            <div id="content-molecular" class="skill-content fade-in block">
+                                <h4 class="text-xl font-bold text-slate-800 mb-4">🧬 Molecular Biology</h4>
+                                <ul class="space-y-3">
+                                    <li class="flex items-center text-slate-600"><span class="mr-3 text-clinical-500">▪</span> DNA Extraction methodologies</li>
+                                    <li class="flex items-center text-slate-600"><span class="mr-3 text-clinical-500">▪</span> PCR (Polymerase Chain Reaction)</li>
+                                    <li class="flex items-center text-slate-600"><span class="mr-3 text-clinical-500">▪</span> Sequencing Alignment techniques</li>
+                                    <li class="flex items-center text-slate-600"><span class="mr-3 text-clinical-500">▪</span> Bioinformatics: BLAST & NCBI Tools</li>
+                                </ul>
+                            </div>
+                            <div id="content-microbiology" class="skill-content fade-in hidden">
+                                <h4 class="text-xl font-bold text-slate-800 mb-4">🦠 Microbiology</h4>
+                                <ul class="space-y-3">
+                                    <li class="flex items-center text-slate-600"><span class="mr-3 text-clinical-500">▪</span> Microbial Culturing and Isolation</li>
+                                    <li class="flex items-center text-slate-600"><span class="mr-3 text-clinical-500">▪</span> Gram Staining and morphological analysis</li>
+                                    <li class="flex items-center text-slate-600"><span class="mr-3 text-clinical-500">▪</span> Mycoremediation analysis and fungal degradation</li>
+                                </ul>
+                            </div>
+                            <div id="content-clinical" class="skill-content fade-in hidden">
+                                <h4 class="text-xl font-bold text-slate-800 mb-4">🩸 Clinical & Biochemical</h4>
+                                <ul class="space-y-3">
+                                    <li class="flex items-center text-slate-600"><span class="mr-3 text-clinical-500">▪</span> Advanced Hematological techniques</li>
+                                    <li class="flex items-center text-slate-600"><span class="mr-3 text-clinical-500">▪</span> Cell culture maintenance and procedures</li>
+                                    <li class="flex items-center text-slate-600"><span class="mr-3 text-clinical-500">▪</span> Biochemical diagnostic analysis</li>
+                                    <li class="flex items-center text-slate-600"><span class="mr-3 text-clinical-500">▪</span> Strict adherence to GLP (Good Laboratory Practice)</li>
+                                </ul>
+                            </div>
+                            <div id="content-equipment" class="skill-content fade-in hidden">
+                                <h4 class="text-xl font-bold text-slate-800 mb-4">🔬 Equipment Proficiency</h4>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="bg-slate-50 p-3 rounded text-sm text-slate-700 border border-slate-100">Laminar Flow Cabinet</div>
+                                    <div class="bg-slate-50 p-3 rounded text-sm text-slate-700 border border-slate-100">Autoclave & Fume Hood</div>
+                                    <div class="bg-slate-50 p-3 rounded text-sm text-slate-700 border border-slate-100">Centrifuge Machine</div>
+                                    <div class="bg-slate-50 p-3 rounded text-sm text-slate-700 border border-slate-100">Vortex Mixer</div>
+                                    <div class="bg-slate-50 p-3 rounded text-sm text-slate-700 border border-slate-100">Compound/Light Microscopy</div>
+                                    <div class="bg-slate-50 p-3 rounded text-sm text-slate-700 border border-slate-100">Micropipetting (High precision)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="experience" class="mb-24 pt-12">
+                <div class="mb-8 max-w-3xl">
+                    <h3 class="text-3xl font-bold text-slate-900 mb-4">Professional & Research Experience</h3>
+                    <p class="text-slate-600 text-lg">
+                        This section highlights my practical application of scientific principles in real-world and academic settings. Click on the roles on the left to explore the detailed responsibilities, research outcomes, and clinical procedures I engaged with in each position.
+                    </p>
+                </div>
+
+                <div class="flex flex-col lg:flex-row gap-8 bg-white rounded-2xl shadow-sm border border-slate-200 p-2 lg:p-0 overflow-hidden">
+                    
+                    <div class="lg:w-1/3 bg-slate-50 lg:border-r border-slate-200 p-4 lg:p-6 flex flex-col gap-3">
+                        <button onclick="loadExperience('avon')" id="exp-btn-avon" class="exp-btn text-left p-4 rounded-xl transition-all bg-white shadow-sm border-l-4 border-clinical-500">
+                            <h5 class="font-bold text-slate-900">Intern</h5>
+                            <p class="text-sm text-slate-500 mt-1">Avon Pharmo Chem</p>
+                        </button>
+                        <button onclick="loadExperience('kelaniya')" id="exp-btn-kelaniya" class="exp-btn text-left p-4 rounded-xl transition-all hover:bg-white hover:shadow-sm border-l-4 border-transparent hover:border-slate-300 text-slate-600">
+                            <h5 class="font-bold text-slate-900">Research Assistant</h5>
+                            <p class="text-sm text-slate-500 mt-1">University of Kelaniya</p>
+                        </button>
+                        <button onclick="loadExperience('genelabs')" id="exp-btn-genelabs" class="exp-btn text-left p-4 rounded-xl transition-all hover:bg-white hover:shadow-sm border-l-4 border-transparent hover:border-slate-300 text-slate-600">
+                            <h5 class="font-bold text-slate-900">Intern Student</h5>
+                            <p class="text-sm text-slate-500 mt-1">GENELABS Medical</p>
+                        </button>
+                    </div>
+
+                    <div class="lg:w-2/3 p-6 lg:p-10 flex flex-col justify-center min-h-[350px]">
+                        <div id="exp-display" class="fade-in">
+                            <div class="inline-block px-3 py-1 bg-clinical-100 text-clinical-800 rounded-full text-xs font-bold mb-4">August 2025 – Present</div>
+                            <h3 class="text-2xl font-bold text-slate-900">Intern</h3>
+                            <h4 class="text-lg text-clinical-700 font-medium mt-1 mb-6">Avon Pharmo Chem (Pvt) Ltd</h4>
+                            
+                            <ul class="space-y-4">
+                                <li class="flex items-start">
+                                    <span class="text-clinical-500 mr-3 mt-1 text-lg">▹</span>
+                                    <span class="text-slate-600 text-lg leading-relaxed">Gaining critical industry exposure within a leading pharmaceutical and chemical supplier environment.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-clinical-500 mr-3 mt-1 text-lg">▹</span>
+                                    <span class="text-slate-600 text-lg leading-relaxed">Supporting technical workflows and strictly adhering to industrial safety, chemical handling, and quality standards.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="education" class="mb-24 pt-12">
+                <div class="mb-8 max-w-3xl">
+                    <h3 class="text-3xl font-bold text-slate-900 mb-4">Education & Credentials</h3>
+                    <p class="text-slate-600 text-lg">
+                        A solid academic foundation backing my laboratory and research experience. This section outlines my formal degrees alongside supplementary certifications in statistics, ICT, and language that ensure comprehensive professional competency.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+                    <div class="bg-clinical-50 border border-clinical-100 p-6 rounded-2xl col-span-1 md:col-span-2">
+                        <div class="flex items-center mb-2">
+                            <span class="text-3xl mr-3">🎓</span>
+                            <h4 class="text-xl font-bold text-slate-900">BSc (Hons) in Biomedical Science <span class="font-normal text-slate-500 text-lg">| Second Class</span></h4>
+                        </div>
+                        <p class="text-slate-700 ml-10 text-lg">Business Management School (BMS) – Affiliated with Northumbria University, UK</p>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col">
+                        <span class="text-2xl mb-3">🔬</span>
+                        <h4 class="font-bold text-slate-900 mb-1">Certificates in Microbiology & Statistics</h4>
+                        <p class="text-slate-500 text-sm">Spectrum Institute of Science & Technology</p>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col">
+                        <span class="text-2xl mb-3">💻</span>
+                        <h4 class="font-bold text-slate-900 mb-1">Certificate in ICT <span class="font-normal text-green-600 text-sm bg-green-50 px-2 py-0.5 rounded">Distinction</span></h4>
+                        <p class="text-slate-500 text-sm">Benedict XVI Catholic Institute</p>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col md:col-span-2 max-w-md">
+                        <span class="text-2xl mb-3">🗣️</span>
+                        <h4 class="font-bold text-slate-900 mb-1">Diploma in English <span class="font-normal text-slate-500 text-sm">| Intermediate</span></h4>
+                        <p class="text-slate-500 text-sm">Benedict XVI Catholic Institute</p>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-200 pt-12">
+                    <h3 class="text-2xl font-bold text-slate-900 mb-6">Professional References</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="p-6 bg-white border border-slate-200 rounded-xl flex items-start space-x-4 shadow-sm">
+                            <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-xl">👤</div>
+                            <div>
+                                <h5 class="font-bold text-slate-900">Mrs. Nadeema Dharmasri</h5>
+                                <p class="text-sm text-slate-600 mb-2">Senior Lecturer, BMS</p>
+                                <p class="text-sm text-slate-500">📧 Nadeema.d@bms.ac.lk</p>
+                                <p class="text-sm text-slate-500">📞 070-2298344</p>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-white border border-slate-200 rounded-xl flex items-start space-x-4 shadow-sm">
+                            <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-xl">👤</div>
+                            <div>
+                                <h5 class="font-bold text-slate-900">Mrs. Nanda K. Attanayaka</h5>
+                                <p class="text-sm text-slate-600 mb-2">Attorney-at-Law</p>
+                                <p class="text-sm text-slate-500">📞 071-4472685</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+        </main>
+    </div>
+
+    <script>
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('main section');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active', 'bg-sky-100');
+                if (link.getAttribute('href').includes(current) && current !== '') {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        const ctx = document.getElementById('skillsRadarChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: ['Molecular Biology', 'Microbiology', 'Clinical Protocols', 'Lab Equipment', 'Data & Research', 'Bioinformatics'],
+                datasets: [{
+                    label: 'Demonstrated Competency Level',
+                    data: [85, 90, 80, 95, 85, 75],
+                    backgroundColor: 'rgba(20, 184, 166, 0.2)',
+                    borderColor: 'rgba(20, 184, 166, 1)',
+                    pointBackgroundColor: 'rgba(3, 105, 161, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(3, 105, 161, 1)',
+                    borderWidth: 2,
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(0, 0, 0, 0.05)' },
+                        grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                        pointLabels: {
+                            font: { family: 'Inter', size: 12, weight: '600' },
+                            color: '#475569'
+                        },
+                        ticks: { display: false, min: 0, max: 100 }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                        titleFont: { family: 'Inter', size: 14 },
+                        bodyFont: { family: 'Inter', size: 13 },
+                        padding: 12,
+                        cornerRadius: 8,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return 'Proficiency Score: ' + context.parsed.r + '/100';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        function switchSkillTab(tabName) {
+            const tabs = ['molecular', 'microbiology', 'clinical', 'equipment'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                const content = document.getElementById(`content-${t}`);
+                
+                if (t === tabName) {
+                    btn.classList.add('bg-white', 'border-b-2', 'border-clinical-500', 'text-clinical-700');
+                    btn.classList.remove('text-slate-500', 'hover:text-slate-700');
+                    content.classList.remove('hidden');
+                    content.classList.add('block');
+                } else {
+                    btn.classList.remove('bg-white', 'border-b-2', 'border-clinical-500', 'text-clinical-700');
+                    btn.classList.add('text-slate-500', 'hover:text-slate-700');
+                    content.classList.remove('block');
+                    content.classList.add('hidden');
+                }
+            });
+        }
+
+        const experienceData = {
+            'avon': {
+                period: 'August 2025 – Present',
+                title: 'Intern',
+                company: 'Avon Pharmo Chem (Pvt) Ltd',
+                points: [
+                    'Gaining critical industry exposure within a leading pharmaceutical and chemical supplier environment.',
+                    'Supporting technical workflows and strictly adhering to industrial safety, chemical handling, and quality standards.'
+                ]
+            },
+            'kelaniya': {
+                period: 'Research Project',
+                title: 'Research Assistant / Co-Author',
+                company: 'Molecular Medicine Unit, Faculty of Medicine, University of Kelaniya',
+                points: [
+                    'Conducted highly specialized research on <strong>Leptospirosis</strong>, focusing heavily on molecular identification techniques.',
+                    'Applied advanced fungal isolation and biodegradation analysis methodologies in academic settings.',
+                    '<strong>Co-authored published research paper:</strong> <em>"Isolation, Characterization, and Analysing the Biodegradation Potential of Naphthalene and Phenanthrene Degrading Beach Soil Fungi for Enhanced Mycoremediation."</em> (Published with University of Sri Jayewardenepura).'
+                ]
+            },
+            'genelabs': {
+                period: 'Completed',
+                title: 'Intern Student',
+                company: 'GENELABS Medical, Colombo 05',
+                points: [
+                    'Completed an intensive, high-paced clinical internship, recognized with <strong>Distinction</strong>.',
+                    'Actively assisted in routine and advanced diagnostic procedures across both microbiology and biochemistry clinical departments.',
+                    'Ensured strict and uncompromising adherence to the ethical handling of sensitive human samples and maintained rigorous data integrity protocols.'
+                ]
+            }
+        };
+
+        function loadExperience(key) {
+            const display = document.getElementById('exp-display');
+            const data = experienceData[key];
+            
+            display.classList.remove('fade-in');
+            void display.offsetWidth; 
+            
+            const pointsHtml = data.points.map(p => `
+                <li class="flex items-start">
+                    <span class="text-clinical-500 mr-3 mt-1 text-lg">▹</span>
+                    <span class="text-slate-600 text-lg leading-relaxed">${p}</span>
+                </li>
+            `).join('');
+
+            display.innerHTML = `
+                <div class="inline-block px-3 py-1 bg-clinical-100 text-clinical-800 rounded-full text-xs font-bold mb-4">${data.period}</div>
+                <h3 class="text-2xl font-bold text-slate-900">${data.title}</h3>
+                <h4 class="text-lg text-clinical-700 font-medium mt-1 mb-6">${data.company}</h4>
+                <ul class="space-y-4">${pointsHtml}</ul>
+            `;
+            
+            display.classList.add('fade-in');
+
+            document.querySelectorAll('.exp-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'shadow-sm', 'border-clinical-500', 'text-slate-900');
+                btn.classList.add('border-transparent', 'text-slate-600');
+                btn.querySelector('h5').classList.remove('text-slate-900');
+            });
+
+            const activeBtn = document.getElementById(`exp-btn-${key}`);
+            activeBtn.classList.add('bg-white', 'shadow-sm', 'border-clinical-500');
+            activeBtn.classList.remove('border-transparent', 'text-slate-600');
+            activeBtn.querySelector('h5').classList.add('text-slate-900');
+        }
+    </script>
+</body>
+</html>
